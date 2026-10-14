@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MADINE — Discover Jaipur's cafés, menus & people</title>
+<meta name="description" content="MADINE — discover Jaipur's best cafés and restaurants by craving, vibe and neighbourhood. Browse real menu cards, save favourites and find your people.">
+<meta name="theme-color" content="#160F22">
+<meta property="og:title" content="MADINE — Your City. Your Moments.">
+<meta property="og:description" content="250 Jaipur cafés and restaurants with real menu cards, photos and vibes.">
+<meta property="og:image" content="assets/brand/og-image.png">
+<link rel="icon" type="image/png" href="assets/brand/icon-64.png">
+<link rel="apple-touch-icon" href="assets/brand/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+<a class="skipLink" href="#main">Skip to content</a>
+
+<!-- ============ Top navigation ============ -->
+<header class="topNav" id="topNav">
+  <div class="container topNavInner">
+    <a href="#home" class="brand" aria-label="MADINE home">
+      <img src="assets/brand/logo-pink.png" alt="MADINE" width="101" height="54">
+    </a>
+    <nav class="navLinks" aria-label="Primary">
+      <a href="#home" data-nav="home">Home</a>
+      <a href="#discover" data-nav="discover">Discover</a>
+      <a href="#people" data-nav="people">People</a>
+      <a href="#events" data-nav="events">Events</a>
+      <a href="#communities" data-nav="communities">Communities</a>
+    </nav>
+    <div class="navActions">
+      <button class="searchTrigger" data-action="open-search" aria-label="Search">
+        <i data-lucide="search"></i><span>Search cafés, dishes, areas</span><kbd>/</kbd>
+      </button>
+      <button class="iconBtn hideMobile" data-href="#saved" aria-label="Saved places" title="Saved"><i data-lucide="heart"></i><span class="countDot" id="savedCount" hidden></span></button>
+      <button class="iconBtn hideMobile" data-href="#messages" aria-label="Messages" title="Messages"><i data-lucide="message-circle"></i></button>
+      <div class="menuWrap">
+        <button class="avatarBtn myAvatar" id="avatarBtn" aria-haspopup="menu" aria-expanded="false" aria-label="Account menu"><span class="avatarInitial">?</span></button>
+        <div class="dropdown" id="accountMenu" role="menu">
+          <div class="dropdownHead" id="accountMenuHead"></div>
+          <a href="#me" role="menuitem"><i data-lucide="user-round"></i> My profile</a>
+          <a href="#saved" role="menuitem"><i data-lucide="heart"></i> Saved places</a>
+          <a href="#connections" role="menuitem"><i data-lucide="users-round"></i> Connections</a>
+          <a href="#messages" role="menuitem"><i data-lucide="message-circle"></i> Messages</a>
+          <a href="#business" role="menuitem"><i data-lucide="store"></i> For businesses</a>
+          <hr>
+          <button role="menuitem" id="authMenuBtn" data-action="auth-toggle"><i data-lucide="log-in"></i> <span>Log in</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============ HOME ============ -->
+<section id="view-home" class="view" data-view="home">
+  <div class="container">
+    <div class="hero">
+      <div class="heroBg" aria-hidden="true"></div>
+      <div class="heroContent">
+        <span class="heroEyebrow"><span class="pulse"></span> Jaipur · <b id="heroCount">250</b> places with real menus</span>
+        <h1 class="heroTitle">Your city.<br><em>Your moments.</em></h1>
+        <p class="heroLead">Find the café that fits your mood — browse real menu cards, photos and vibes from across the Pink City.</p>
+        <form class="heroSearch" id="heroSearchForm" role="search">
+          <i data-lucide="search"></i>
+          <input id="heroSearch" type="search" autocomplete="off" placeholder="Try “cold coffee”, “rooftop” or “C Scheme”" aria-label="Search cafés, dishes and areas">
+          <button type="submit" class="btn btnPrimary">Search</button>
+        </form>
+        <div class="heroChips">
+          <button class="glassChip" data-quick="vibes:Date Night"><i data-lucide="moon-star"></i> Date night</button>
+          <button class="glassChip" data-quick="vibes:Quiet Work"><i data-lucide="laptop"></i> Work-friendly</button>
+          <button class="glassChip" data-quick="foods:coffee"><i data-lucide="coffee"></i> Great coffee</button>
+          <button class="glassChip" data-quick="vibes:Friends"><i data-lucide="party-popper"></i> With friends</button>
+          <button class="glassChip" data-quick="types:Rooftop"><i data-lucide="building-2"></i> Rooftops</button>
+        </div>
+      </div>
+      <aside class="heroSpotlight" id="heroSpotlight" aria-label="Top rated right now"></aside>
+    </div>
+
+    <div class="statBand reveal" id="statBand"></div>
+
+    <section class="section" id="forYouSection" hidden>
+      <div class="sectionHead">
+        <div><h2>Picked for you</h2><p id="forYouWhy">Based on your interests and favourite cafés.</p></div>
+        <div class="railNav"><button class="seeAll" data-action="edit-profile">Edit preferences</button><button class="railBtn" data-rail="railForYou" data-dir="-1" aria-label="Scroll left"><i data-lucide="chevron-left"></i></button><button class="railBtn" data-rail="railForYou" data-dir="1" aria-label="Scroll right"><i data-lucide="chevron-right"></i></button></div>
+      </div>
+      <div class="rail" id="railForYou"></div>
+    </section>
+
+    <section class="section reveal">
+      <div class="sectionHead">
+        <div><h2>Top rated in Jaipur</h2><p>The city's highest-rated tables, loved by thousands of diners.</p></div>
+        <div class="railNav"><a href="#discover" class="seeAll" data-sort-link="rating">See all</a><button class="railBtn" data-rail="railTop" data-dir="-1" aria-label="Scroll left"><i data-lucide="chevron-left"></i></button><button class="railBtn" data-rail="railTop" data-dir="1" aria-label="Scroll right"><i data-lucide="chevron-right"></i></button></div>
+      </div>
+      <div class="rail" id="railTop"></div>
+    </section>
+
+    <section class="section reveal">
+      <div class="sectionHead"><div><h2>What are you craving?</h2><p>Jump straight to places known for it.</p></div></div>
+      <div class="tileRail" id="cravingTiles"></div>
+    </section>
+
+    <section class="section reveal">
+      <div class="sectionHead"><div><h2>Find your vibe</h2><p>Plans change. Your café should match.</p></div></div>
+      <div class="vibeGrid" id="vibeTiles"></div>
+    </section>
+
+    <section class="section reveal">
+      <div class="sectionHead">
+        <div><h2>Explore by neighbourhood</h2><p>From the old city bazaars to Vaishali's café strip.</p></div>
+        <div class="railNav"><a href="#discover" class="seeAll">All areas</a></div>
+      </div>
+      <div class="areaGrid" id="areaGrid"></div>
+    </section>
+
+    <section class="section reveal">
+      <div class="sectionHead">
+        <div><h2>Café hopping</h2><p>Coffee, desserts and slow afternoons.</p></div>
+        <div class="railNav"><a href="#discover" class="seeAll" data-type-link="Cafe">See all cafés</a></div>
+      </div>
+      <div class="cardGrid" id="cafePicks"></div>
+    </section>
+
+    <section class="section reveal">
+      <div class="splitBand">
+        <div>
+          <div class="sectionHead"><div><h2>Find your people</h2><p>Meet people who love the same places you do.</p></div><div class="railNav"><a href="#people" class="seeAll">Discover people</a></div></div>
+          <div class="peopleRow" id="homePeople"></div>
+        </div>
+        <div>
+          <div class="sectionHead"><div><h2>Happening soon</h2><p>Meetups around the city.</p></div><div class="railNav"><a href="#events" class="seeAll">All events</a></div></div>
+          <div class="eventList" id="homeEvents"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="ctaBand">
+        <div>
+          <span class="eyebrow light">For cafés & restaurants</span>
+          <h2>Turn your café into a community.</h2>
+          <p>Showcase your menu, vibe and events to people already looking for a place like yours.</p>
+        </div>
+        <a href="#business" class="btn btnLight">Explore business tools <i data-lucide="arrow-right"></i></a>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- ============ DISCOVER ============ -->
+<section id="view-discover" class="view" data-view="discover">
+  <div class="container">
+    <header class="pageHead">
+      <span class="eyebrow">Discover</span>
+      <h1>Every café in Jaipur, <em>filtered your way.</em></h1>
+      <p class="lead" id="discoverLead">Search by name, dish, cuisine or neighbourhood — then narrow it down.</p>
+    </header>
+
+    <div class="toolbar" id="discoverToolbar">
+      <div class="searchField">
+        <i data-lucide="search"></i>
+        <input id="discoverSearch" type="search" autocomplete="off" placeholder="Search cafés, dishes, cuisines…" aria-label="Search">
+        <button class="clearBtn" id="discoverClear" aria-label="Clear search" hidden><i data-lucide="x"></i></button>
+      </div>
+      <div class="typeTabs" id="typeTabs" role="tablist" aria-label="Place type"></div>
+      <div class="toolbarEnd">
+        <button class="btn btnGhost filterToggle" data-action="open-filters"><i data-lucide="sliders-horizontal"></i> Filters <span class="badgeCount" id="filterCount" hidden></span></button>
+        <label class="selectWrap"><span class="srOnly">Sort by</span>
+          <select id="sortSelect">
+            <option value="recommended">Recommended</option>
+            <option value="rating">Top rated</option>
+            <option value="reviews">Most reviewed</option>
+            <option value="menu">Most menu pages</option>
+            <option value="az">A – Z</option>
+          </select>
+          <i data-lucide="chevrons-up-down"></i>
+        </label>
+      </div>
+    </div>
+
+    <div class="activeFilters" id="activeFilters"></div>
+
+    <div class="discoverLayout">
+      <aside class="filterPanel" id="filterPanel" aria-label="Filters"></aside>
+      <div>
+        <div class="resultMeta"><span id="resultCount"></span></div>
+        <div class="cardGrid discoverGrid" id="discoverGrid"></div>
+        <div class="loadMore" id="loadMore"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CAFÉ DETAIL ============ -->
+<section id="view-cafe" class="view" data-view="cafe">
+  <div class="container">
+    <div class="crumbs"><button class="backBtn" data-action="back"><i data-lucide="arrow-left"></i> Back</button><span id="crumbTrail"></span></div>
+    <div class="mosaicWrap">
+      <div class="mosaic" id="cafeMosaic"></div>
+      <button class="mosaicAll" id="mosaicAll" data-lb-gallery="0"><i data-lucide="images"></i> <span>Show all photos</span></button>
+      <span class="mosaicCount" id="mosaicCount"></span>
+    </div>
+
+    <div class="cafeHead">
+      <div class="cafeHeadMain">
+        <div class="cafeBadges" id="cafeBadges"></div>
+        <h1 id="cafeName"></h1>
+        <div class="cafeMeta" id="cafeMeta"></div>
+        <div class="chipRow" id="cafeCuisines"></div>
+      </div>
+      <div class="cafeActions">
+        <button class="btn btnGhost" id="cafeSaveBtn" data-action="save-current"><i data-lucide="heart"></i> <span>Save</span></button>
+        <button class="btn btnGhost" data-action="share-current"><i data-lucide="share-2"></i> Share</button>
+        <button class="btn btnGhost" data-action="check-in"><i data-lucide="calendar-plus"></i> I'll be here</button>
+        <a class="btn btnPrimary" id="cafeDirections" target="_blank" rel="noopener"><i data-lucide="navigation"></i> Directions</a>
+      </div>
+    </div>
+
+    <div class="cafeLayout">
+      <div class="cafeMain">
+        <div class="tabs" id="cafeTabs" role="tablist">
+          <button role="tab" data-tab="overview" class="active">Overview</button>
+          <button role="tab" data-tab="menu">Menu <span class="tabCount" id="menuTabCount"></span></button>
+          <button role="tab" data-tab="photos">Photos <span class="tabCount" id="photoTabCount"></span></button>
+          <button role="tab" data-tab="people">People</button>
+          <span class="tabInk" aria-hidden="true"></span>
+        </div>
+
+        <div class="tabPane active" data-pane="overview">
+          <div class="block" id="mustTryBlock">
+            <h2 class="blockTitle">Must try</h2>
+            <div class="mustTry" id="cafeMustTry"></div>
+          </div>
+          <div class="block">
+            <h2 class="blockTitle">About</h2>
+            <p class="prose" id="cafeAbout"></p>
+          </div>
+          <div class="block">
+            <h2 class="blockTitle">Good for</h2>
+            <div class="vibeChips" id="cafeVibes"></div>
+          </div>
+          <div class="block" id="menuPreviewBlock">
+            <div class="blockHead"><h2 class="blockTitle">Menu</h2><button class="textBtn" data-tab-jump="menu">View full menu <i data-lucide="arrow-right"></i></button></div>
+            <div class="menuThumbs compact" id="menuPreview"></div>
+          </div>
+        </div>
+
+        <div class="tabPane" data-pane="menu">
+          <div class="block" id="menuCardsBlock">
+            <div class="blockHead"><h2 class="blockTitle">Menu card</h2><span class="muted" id="menuCardMeta"></span></div>
+            <p class="muted small">Tap a page to open it full screen — prices are listed on the menu card itself.</p>
+            <div class="menuThumbs" id="menuThumbs"></div>
+          </div>
+          <div class="block" id="dishBlock">
+            <div class="blockHead"><h2 class="blockTitle">Dishes</h2><span class="muted" id="dishMeta"></span></div>
+            <div class="searchField small"><i data-lucide="search"></i><input id="dishSearch" type="search" placeholder="Search this menu…" aria-label="Search this menu"></div>
+            <div class="menuCats" id="menuCats"></div>
+            <div class="dishList" id="dishList"></div>
+          </div>
+        </div>
+
+        <div class="tabPane" data-pane="photos">
+          <div class="block"><div class="photoGrid" id="photoGrid"></div></div>
+        </div>
+
+        <div class="tabPane" data-pane="people">
+          <div class="block">
+            <div class="checkinBox" id="cafeCheckins"></div>
+            <h2 class="blockTitle">People who love this place</h2>
+            <p class="muted">Public profiles only — live locations are never shown.</p>
+            <div class="peopleGrid" id="cafePeople"></div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="cafeAside">
+        <div class="infoCard" id="cafeInfoCard"></div>
+      </aside>
+    </div>
+
+    <section class="section" id="similarSection">
+      <div class="sectionHead">
+        <div><h2 id="similarTitle">More nearby</h2><p>Other places worth a visit in the same neighbourhood.</p></div>
+        <div class="railNav"><button class="railBtn" data-rail="railSimilar" data-dir="-1" aria-label="Scroll left"><i data-lucide="chevron-left"></i></button><button class="railBtn" data-rail="railSimilar" data-dir="1" aria-label="Scroll right"><i data-lucide="chevron-right"></i></button></div>
+      </div>
+      <div class="rail" id="railSimilar"></div>
+    </section>
+  </div>
+  <div class="mobileActionBar" id="cafeActionBar">
+    <button class="iconAction" data-action="save-current" aria-label="Save"><i data-lucide="heart"></i></button>
+    <button class="btn btnGhost" data-tab-jump="menu"><i data-lucide="book-open"></i> Menu</button>
+    <a class="btn btnPrimary" id="cafeDirectionsMobile" target="_blank" rel="noopener"><i data-lucide="navigation"></i> Directions</a>
+  </div>
+</section>
+
+<!-- ============ PEOPLE ============ -->
+<section id="view-people" class="view" data-view="people">
+  <div class="container">
+    <header class="pageHead">
+      <span class="eyebrow">Connect</span>
+      <h1>Find <em>your people.</em></h1>
+      <p class="lead">Discover people by interests and favourite spots — without ever exposing live locations.</p>
+    </header>
+    <div class="toolbar">
+      <div class="searchField"><i data-lucide="search"></i><input id="peopleSearch" type="search" placeholder="Search by name or interest…" aria-label="Search people"></div>
+      <div class="chipRow" id="interestChips"></div>
+      <div class="toolbarEnd"><a href="#connections" class="btn btnGhost"><i data-lucide="users-round"></i> My connections</a></div>
+    </div>
+    <div class="peopleGrid" id="peopleGrid"></div>
+  </div>
+</section>
+
+<!-- ============ PROFILE ============ -->
+<section id="view-profile" class="view" data-view="profile">
+  <div class="container narrow">
+    <div class="crumbs"><button class="backBtn" data-action="back"><i data-lucide="arrow-left"></i> Back</button></div>
+    <div class="profileCard">
+      <div class="profileCover"></div>
+      <div class="profileBody">
+        <div class="profileAvatar" id="profileInitial"></div>
+        <div class="profileInfo">
+          <h1 id="profileName"></h1>
+          <p class="muted" id="profileRoleTag"></p>
+        </div>
+        <div id="profileConnectBtn"></div>
+      </div>
+    </div>
+    <div class="twoCol">
+      <div class="panel">
+        <h2 class="blockTitle">About</h2>
+        <p class="prose" id="profileBio"></p>
+        <h3 class="miniTitle">Interests</h3>
+        <div class="chipRow wrap" id="profileInterests"></div>
+        <h3 class="miniTitle">Usually prefers</h3>
+        <p class="prose" id="profilePreference"></p>
+      </div>
+      <div class="panel">
+        <h2 class="blockTitle">Favourite spots</h2>
+        <div class="miniCafeList" id="profileFavCafes"></div>
+        <div class="privacyNote"><i data-lucide="shield-check"></i> Only broad preferences are public. Planned café visits are shared with connections only.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONNECTIONS ============ -->
+<section id="view-connections" class="view" data-view="connections">
+  <div class="container narrow">
+    <header class="pageHead">
+      <span class="eyebrow">Your network</span>
+      <h1>Connections</h1>
+      <p class="lead">Manage requests and keep up with the people you've met.</p>
+    </header>
+    <div class="segmented" id="connTabs" role="tablist">
+      <button class="active" data-conn="mine">Connected</button>
+      <button data-conn="incoming">Requests <span class="tabCount" id="incomingCount"></span></button>
+      <button data-conn="sent">Sent</button>
+    </div>
+    <div class="rowList" id="connList"></div>
+  </div>
+</section>
+
+<!-- ============ COMMUNITIES ============ -->
+<section id="view-communities" class="view" data-view="communities">
+  <div class="container">
+    <header class="pageHead">
+      <span class="eyebrow">Community</span>
+      <h1>Belong to something <em>local.</em></h1>
+      <p class="lead">Interest, neighbourhood and activity-based groups across Jaipur.</p>
+    </header>
+    <div class="communityGrid" id="communityGrid"></div>
+  </div>
+</section>
+
+<!-- ============ EVENTS ============ -->
+<section id="view-events" class="view" data-view="events">
+  <div class="container narrow">
+    <header class="pageHead">
+      <span class="eyebrow">Experiences</span>
+      <h1>Meet <em>offline.</em></h1>
+      <p class="lead">Useful, social and creative meetups happening around Jaipur.</p>
+      <button class="btn btnPrimary headAction" data-action="create-event"><i data-lucide="calendar-plus"></i> Host an event</button>
+    </header>
+    <div class="eventList large" id="eventList"></div>
+  </div>
+</section>
+
+<!-- ============ MESSAGES ============ -->
+<section id="view-messages" class="view" data-view="messages">
+  <div class="container">
+    <header class="pageHead compact"><h1>Messages</h1></header>
+    <div class="chat" id="chatShell">
+      <div class="chatList">
+        <div class="chatListHead">Conversations</div>
+        <div id="chatList"></div>
+      </div>
+      <div class="conversation">
+        <div class="chatEmptyState" id="chatEmptyState">
+          <div class="emptyIcon"><i data-lucide="messages-square"></i></div>
+          <h3>Your conversations</h3>
+          <p class="muted">Pick a connection to start chatting.</p>
+        </div>
+        <div id="chatActive" hidden>
+          <div class="convoHead">
+            <button class="iconBtn chatBack" data-action="chat-back" aria-label="Back to conversations"><i data-lucide="arrow-left"></i></button>
+            <div class="miniAvatar" id="convoAvatar"></div>
+            <div><b id="convoHeadName"></b><div class="muted small" id="convoHeadPresence"></div></div>
+          </div>
+          <div class="messages" id="messagesBox"></div>
+          <form class="composer" id="composer"><input id="msgInput" autocomplete="off" placeholder="Write a message…" aria-label="Message"><button class="btn btnPrimary" type="submit" aria-label="Send"><i data-lucide="send-horizontal"></i></button></form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SAVED ============ -->
+<section id="view-saved" class="view" data-view="saved">
+  <div class="container">
+    <header class="pageHead">
+      <span class="eyebrow">Your collection</span>
+      <h1>Saved <em>for later.</em></h1>
+      <p class="lead">Places you've hearted — ready for your next plan.</p>
+    </header>
+    <div class="cardGrid" id="savedGrid"></div>
+  </div>
+</section>
+
+<!-- ============ MY PROFILE ============ -->
+<section id="view-me" class="view" data-view="me">
+  <div class="container narrow">
+    <div id="myProfileLoggedOut" class="emptyState" hidden>
+      <div class="emptyIcon"><i data-lucide="user-round"></i></div>
+      <h2>Make MADINE yours</h2>
+      <p class="muted">Log in with your email to keep your saves, connections and chats in one place.</p>
+      <button class="btn btnPrimary" data-action="login">Log in / Sign up</button>
+    </div>
+    <div id="myProfileLoggedIn" hidden>
+      <div class="profileCard">
+        <div class="profileCover"></div>
+        <div class="profileBody">
+          <label class="profileAvatar myAvatar editable" for="avatarUpload" title="Change photo"><span class="avatarInitial">K</span><span class="avatarEdit"><i data-lucide="camera"></i></span></label>
+          <input type="file" id="avatarUpload" accept="image/jpeg,image/png,image/webp" hidden>
+          <div class="profileInfo">
+            <h1 id="myName"></h1>
+            <p class="muted" id="myPhone"></p>
+          </div>
+          <div class="profileActions">
+            <button class="btn btnPrimary" data-action="edit-profile"><i data-lucide="user-pen"></i> Edit profile</button>
+            <button class="btn btnGhost" data-action="logout"><i data-lucide="log-out"></i> Log out</button>
+          </div>
+        </div>
+      </div>
+      <div class="statBand small" id="myStats"></div>
+      <div class="twoCol">
+        <div class="panel">
+          <h2 class="blockTitle">About you</h2>
+          <div id="myAbout"></div>
+        </div>
+        <div class="panel">
+          <h2 class="blockTitle">Privacy</h2>
+          <p class="prose">Other people see your name, photo, bio, interests and favourite cafés. Your email is never shown. Café check-in times are visible to your connections only, and chat opens only after you both accept.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BUSINESS ============ -->
+<section id="view-business" class="view" data-view="business">
+  <div class="container">
+    <header class="pageHead">
+      <span class="eyebrow">For businesses</span>
+      <h1>Turn a café into a <em>community.</em></h1>
+      <p class="lead">Showcase your vibe, menu, offers and events — and see how people discover you.</p>
+    </header>
+    <p class="noteLine"><i data-lucide="info"></i> Preview dashboard with sample numbers.</p>
+    <div class="kpiGrid">
+      <div class="kpi"><span>Profile views</span><b>12,480</b><em class="up">+18% this month</em></div>
+      <div class="kpi"><span>Saves</span><b>1,284</b><em class="up">+11% this month</em></div>
+      <div class="kpi"><span>Event joins</span><b>346</b><em class="up">+26% this month</em></div>
+      <div class="kpi"><span>Menu views</span><b>5,902</b><em class="up">+9% this month</em></div>
+    </div>
+    <div class="twoCol">
+      <div class="panel featurePanel"><div class="featureIcon"><i data-lucide="store"></i></div><h2 class="blockTitle">Manage your café profile</h2><p class="prose">Photos, menu cards, amenities, vibe tags, offers and customer feedback — all in one place.</p><button class="btn btnPrimary" data-toast="The profile editor is coming soon">Manage profile</button></div>
+      <div class="panel featurePanel"><div class="featureIcon gold"><i data-lucide="calendar-plus"></i></div><h2 class="blockTitle">Host an experience</h2><p class="prose">Create a meetup, workshop, creator night or networking evening at your venue.</p><button class="btn btnGhost" data-toast="The event builder is coming soon">Create event</button></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ Footer ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footerGrid">
+      <div class="footerBrand">
+        <img src="assets/brand/logo-white.png" alt="MADINE" width="187" height="100" loading="lazy">
+        <p>Your city. Your moments. Cafés, cravings and people — connected across Jaipur.</p>
+      </div>
+      <div><h3>Explore</h3><a href="#discover">Discover</a><a href="#people">Find people</a><a href="#communities">Communities</a><a href="#events">Events</a></div>
+      <div><h3>MADINE</h3><a href="#business">For businesses</a><a href="#saved">Saved places</a><a href="#me">My profile</a></div>
+      <div>
+        <h3>Stay in the loop</h3>
+        <p>New cafés, events and MADINE experiences — once a month.</p>
+        <form class="subscribe" id="subscribeForm"><input type="email" required placeholder="Email address" aria-label="Email address"><button class="btn btnPrimary" type="submit">Subscribe</button></form>
+      </div>
+    </div>
+    <div class="footerBottom">
+      <span>© 2026 MADINE · Made for a more connected Jaipur.</span>
+      <span>Photos, menus and ratings come from public listings (Zomato). Vibe and cuisine-type tags are inferred. Verify details with the venue before visiting.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ Mobile tab bar ============ -->
+<nav class="tabBar" aria-label="Primary">
+  <a href="#home" data-nav="home"><i data-lucide="house"></i><span>Home</span></a>
+  <a href="#discover" data-nav="discover"><i data-lucide="compass"></i><span>Discover</span></a>
+  <a href="#people" data-nav="people"><i data-lucide="users-round"></i><span>People</span></a>
+  <a href="#saved" data-nav="saved"><i data-lucide="heart"></i><span>Saved</span></a>
+  <a href="#messages" data-nav="messages"><i data-lucide="message-circle"></i><span>Chats</span></a>
+</nav>
+
+<!-- ============ Search overlay ============ -->
+<div class="searchOverlay" id="searchOverlay" aria-hidden="true">
+  <div class="searchPanel" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="searchPanelHead">
+      <i data-lucide="search"></i>
+      <input id="globalSearch" type="search" autocomplete="off" placeholder="Search cafés, dishes, cuisines, areas…" aria-label="Search">
+      <button class="kbdBtn" data-action="close-search">Esc</button>
+    </div>
+    <div class="searchResults" id="searchResults"></div>
+  </div>
+</div>
+
+<!-- ============ Filters sheet (mobile / tablet) ============ -->
+<div class="sheetOverlay" id="sheetOverlay" data-action="close-filters"></div>
+<div class="sheet" id="filterSheet" role="dialog" aria-modal="true" aria-label="Filters">
+  <div class="sheetHandle"></div>
+  <div class="sheetHead"><h2>Filters</h2><button class="textBtn" data-action="clear-filters">Clear all</button></div>
+  <div class="sheetBody" id="filterSheetBody"></div>
+  <div class="sheetFoot"><button class="btn btnPrimary block" data-action="close-filters" id="sheetApply">Show results</button></div>
+</div>
+
+<!-- ============ Lightbox ============ -->
+<div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <div class="lbTop">
+    <span class="lbCounter" id="lbCounter"></span>
+    <span class="lbCaption" id="lbCaption"></span>
+    <div class="lbTools">
+      <button class="lbBtn" data-lb="zoom" aria-label="Zoom"><i data-lucide="zoom-in"></i></button>
+      <a class="lbBtn" id="lbOpen" target="_blank" rel="noopener" aria-label="Open original"><i data-lucide="external-link"></i></a>
+      <button class="lbBtn" data-lb="close" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+  </div>
+  <div class="lbStage" id="lbStage">
+    <img id="lbImg" alt="">
+    <div class="lbSpinner"></div>
+  </div>
+  <button class="lbNav prev" data-lb="prev" aria-label="Previous"><i data-lucide="chevron-left"></i></button>
+  <button class="lbNav next" data-lb="next" aria-label="Next"><i data-lucide="chevron-right"></i></button>
+  <div class="lbStrip" id="lbStrip"></div>
+</div>
+
+<!-- ============ Auth modal (ids used by js/auth.js) ============ -->
+<div class="authOverlay" id="authOverlay">
+  <div class="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <button class="authClose" aria-label="Close" data-action="close-auth"><i data-lucide="x"></i></button>
+    <img class="authLogo" src="assets/brand/logo-pink.png" alt="" width="140" height="75">
+    <div id="authStepPhone">
+      <h2 id="authTitle">Welcome to MADINE</h2>
+      <p class="muted">Log in with your email — we'll send you a code. No passwords, ever.</p>
+      <div class="authInputRow"><input id="authPhoneInput" type="email" inputmode="email" autocomplete="email" maxlength="254" placeholder="you@example.com" onkeydown="if(event.key==='Enter')submitPhoneStep()"></div>
+      <div class="authError" id="authPhoneError"></div>
+      <button class="btn btnPrimary block" onclick="submitPhoneStep()">Send code</button>
+    </div>
+    <div id="authStepOtp" hidden>
+      <h2>Enter the code</h2>
+      <p class="muted">Sent to <b id="authPhoneDisplay"></b></p>
+      <div class="authHint" id="authDemoHint"></div>
+      <div class="authOtpBoxes" id="authOtpBoxes">
+        <input maxlength="1" inputmode="numeric" aria-label="Digit 1"><input maxlength="1" inputmode="numeric" aria-label="Digit 2"><input maxlength="1" inputmode="numeric" aria-label="Digit 3"><input maxlength="1" inputmode="numeric" aria-label="Digit 4"><input maxlength="1" inputmode="numeric" aria-label="Digit 5"><input maxlength="1" inputmode="numeric" aria-label="Digit 6">
+      </div>
+      <div class="authError" id="authOtpError"></div>
+      <button class="btn btnPrimary block" onclick="submitOtpStep()">Verify & continue</button>
+      <div class="authResend"><span id="authResendTimer">Resend code in 60s</span><button id="authResendBtn" onclick="resendOtp()" disabled>Resend code</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="authOverlay" id="formOverlay">
+  <div class="authModal formModal" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+    <button class="authClose" aria-label="Close" data-action="close-form"><i data-lucide="x"></i></button>
+    <h2 id="formTitle"></h2>
+    <p class="muted" id="formSubtitle"></p>
+    <form id="formBody" novalidate></form>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+<script>
+  if (typeof io === 'undefined') {
+    document.write('<script src="/socket.io/socket.io.js"><\/script>');
+  }
+</script>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/app.js"></script>
+<script src="js/forms.js"></script>
+</body>
+</html>

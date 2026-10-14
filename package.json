@@ -1,0 +1,10 @@
+{
+  "name": "madine-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MADINE / VYBE Platform - Standalone Frontend",
+  "scripts": {
+    "dev": "npx -y serve . -p 3000",
+    "start": "npx -y serve . -p 3000"
+  }
+}
