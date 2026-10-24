@@ -1,0 +1,29 @@
+# =========================================================================
+# MADINE / VYBE Platform - Hostinger Apache & LiteSpeed Configuration
+# =========================================================================
+
+# Prevent directory listings
+Options -Indexes
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # 1. Reverse proxy all /api requests through api/proxy.php
+    # This keeps the backend server completely masked in the DevTools Network tab
+    RewriteRule ^api/?(.*)$ api/proxy.php [L,QSA]
+
+    # 2. Serve static files and assets directly if they exist
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # 3. Single Page Application (SPA) fallback to index.html for all other routes
+    RewriteRule ^ index.html [L]
+</IfModule>

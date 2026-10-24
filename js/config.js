@@ -2,28 +2,20 @@
  * MADINE / VYBE Platform - Central Frontend Configuration
  * =======================================================
  * This file manages the backend API connection for the entire frontend.
- * No hardcoded backend URLs should exist anywhere else in the application.
- *
- * HOW TO CONFIGURE FOR PRODUCTION:
- * - When hosting frontend separately (e.g., Vercel, Netlify, Cloudflare Pages):
- *   Change `DEFAULT_BACKEND_URL` below to your live backend server URL:
- *   e.g. const DEFAULT_BACKEND_URL = "https://your-madine-backend.onrender.com";
- *
- * - When hosting frontend and backend together on the same domain:
- *   Leave `DEFAULT_BACKEND_URL` as empty string "" to use relative /api.
+ * No hardcoded localhost URLs exist anywhere in the application.
  */
 
 (function (window) {
   'use strict';
 
-  // ---> SET YOUR LIVE BACKEND URL HERE FOR SEPARATE HOSTING <---
-  // Leave empty ("") for same-domain deployment or local relative proxy
+  // Live Backend Base URL
+  // Kept empty ("") so client-side JavaScript never exposes the backend URL.
+  // The server-side proxy (api/proxy.php on Hostinger) handles the connection securely.
   const DEFAULT_BACKEND_URL = "";
 
-  // Check for overrides:
-  // 1. window.__MADINE_CONFIG__ (can be injected via HTML or hosting environment)
+  // Check for configuration overrides:
+  // 1. window.__MADINE_CONFIG__ (injected via hosting environment or head tag)
   // 2. localStorage override (useful for debugging from browser DevTools)
-  // 3. Auto-detection for local standalone static server (e.g. live-server / vite / serve on port 3000, 5173, etc.)
   function resolveBackendUrl() {
     if (window.__MADINE_CONFIG__ && window.__MADINE_CONFIG__.BACKEND_URL) {
       return window.__MADINE_CONFIG__.BACKEND_URL.replace(/\/+$/, '');
@@ -38,47 +30,59 @@
       return DEFAULT_BACKEND_URL.trim().replace(/\/+$/, '');
     }
 
-    // Auto-detection for local development:
-    // If the frontend is opened on a different port than backend (4000), default backend to http://localhost:4000
-    const isLocalFrontend = (
-      window.location.protocol === 'file:' ||
-      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
-      window.location.port !== '4000' &&
-      window.location.port !== ''
-    );
-
-    if (isLocalFrontend) {
-      return 'http://localhost:4000';
-    }
-
-    // Default to empty string (same-origin / relative path)
     return '';
   }
 
   const backendUrl = resolveBackendUrl();
 
+  // Mode detection:
+  // When hosted on Hostinger, Vercel, or Netlify, the server reverse-proxies /api requests
+  // directly to the backend. This ensures the real backend URL is NEVER exposed in the
+  // browser's Network or Sources tab.
+  function resolveApiBaseUrl() {
+    // If explicitly told to bypass proxy and use direct backend
+    if (window.__MADINE_CONFIG__ && window.__MADINE_CONFIG__.USE_DIRECT === true) {
+      return backendUrl ? `${backendUrl}/api` : '/api';
+    }
+
+    // When opened directly as a local file (file://), use direct backend URL
+    if (window.location.protocol === 'file:') {
+      return backendUrl ? `${backendUrl}/api` : '/api';
+    }
+
+    // Default to relative /api so requests route through Hostinger (.htaccess / proxy.php),
+    // Vercel rewrites, or Netlify redirects with zero client-side exposure.
+    return '/api';
+  }
+
+  const apiBaseUrl = resolveApiBaseUrl();
+
   const CONFIG = {
-    // Base host URL of the backend (e.g. "https://api.yourdomain.com" or "http://localhost:4000" or "")
+    // Backend Base URL
     BACKEND_URL: backendUrl,
 
-    // API endpoint base URL (e.g. "https://api.yourdomain.com/api" or "/api")
-    API_BASE_URL: backendUrl ? `${backendUrl}/api` : '/api',
+    // API endpoint base URL (relative /api by default for privacy, or direct if configured)
+    API_BASE_URL: apiBaseUrl,
 
-    // Socket.io connection URL (e.g. "https://api.yourdomain.com" or window.location.origin)
+    // Socket.io connection URL (uses same origin or backend host)
     SOCKET_URL: backendUrl || window.location.origin,
 
-    // Formats any media / cafe / avatar URL to route through the backend if needed
+    // Formats any media / cafe / avatar URL
     formatImageUrl: function (path) {
       if (!path || typeof path !== 'string') return path;
       if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:') || path.startsWith('blob:')) {
         return path;
+      }
+      // If image exists in local static folder, return path as-is
+      if (path.startsWith('/cafe-images') || path.startsWith('cafe-images')) {
+        return path.startsWith('/') ? path : `/${path}`;
       }
       if (!backendUrl) return path;
       const cleanPath = path.startsWith('/') ? path : `/${path}`;
       return `${backendUrl}${cleanPath}`;
     },
 
-    // Helper to dynamically switch API URL at runtime from console
+    // Helper to dynamically switch API URL at runtime from console if needed
     setBackendUrl: function (newUrl) {
       if (!newUrl) {
         localStorage.removeItem('MADINE_BACKEND_URL');
@@ -89,9 +93,10 @@
     }
   };
 
-  // Expose globally to the whole frontend
+  // Expose configuration
   window.CONFIG = CONFIG;
-  window.APP_CONFIG = CONFIG; // alias
+  window.APP_CONFIG = CONFIG;
 
-  console.log('[MADINE Config] API Base URL:', CONFIG.API_BASE_URL, '| Backend:', CONFIG.BACKEND_URL || '(same-origin)');
+  // Note: Console logging of the backend URL has been intentionally removed
+  // to prevent leaking the backend server URL in browser DevTools.
 })(window);
